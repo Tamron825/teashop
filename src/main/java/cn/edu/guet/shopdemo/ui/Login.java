@@ -7,13 +7,8 @@ package cn.edu.guet.shopdemo.ui;
 import cn.edu.guet.shopdemo.been.User;
 import cn.edu.guet.shopdemo.dao.UserDao;
 import cn.edu.guet.shopdemo.dao.impl.UserDaoImpl;
-import cn.edu.guet.shopdemo.service.UserService;
-import cn.edu.guet.shopdemo.service.impl.UserServiceImpl;
-import cn.edu.guet.shopdemo.util.ConnectionHandler;
 
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.*;
@@ -85,7 +80,7 @@ public class Login extends JFrame {
                             rank=Integer.parseInt(rs.getString(4));
                             user.setUser_id(user_id);
                             user.setRank(rank);
-                            MianFrame mianFrame = new MianFrame(user);
+                            MainFrame mianFrame = new MainFrame(user);
                             this.setVisible(false);
                             mianFrame.setVisible(true);
                         }else{

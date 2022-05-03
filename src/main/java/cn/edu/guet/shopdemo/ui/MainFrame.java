@@ -5,31 +5,33 @@
 package cn.edu.guet.shopdemo.ui;
 
 import cn.edu.guet.shopdemo.been.Employees;
+import cn.edu.guet.shopdemo.been.Product;
 import cn.edu.guet.shopdemo.been.User;
 import cn.edu.guet.shopdemo.dao.EmployeesDao;
+import cn.edu.guet.shopdemo.dao.ProductDao;
 import cn.edu.guet.shopdemo.dao.UserDao;
 import cn.edu.guet.shopdemo.dao.impl.EmployeesDaoImpl;
+import cn.edu.guet.shopdemo.dao.impl.ProductDaoImpl;
 import cn.edu.guet.shopdemo.dao.impl.UserDaoImpl;
 import cn.edu.guet.shopdemo.tablemodel.EmployeesTableModel;
+import cn.edu.guet.shopdemo.tablemodel.ProductTableModel;
 import cn.edu.guet.shopdemo.tablemodel.UserTableModel;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  * @author 1
  */
-public class MianFrame extends JFrame {
+public class MainFrame extends JFrame {
     User user;
-    public MianFrame(User user) {
+    public MainFrame(User user) {
         this.user=user;
         initComponents();
     }
 
-    public MianFrame() {
+    public MainFrame() {
         initComponents();
     }
 
@@ -365,6 +367,14 @@ public class MianFrame extends JFrame {
                 //======== scrollPane3 ========
                 {
                     scrollPane3.setViewportView(table3);
+                    String temp=null;
+                    producttableModel = new DefaultTableModel(ProductTableModel.getDataFromDatabase(temp), head_product) {
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    table3.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                    table3.setModel(producttableModel);
                 }
                 panel3.add(scrollPane3);
                 scrollPane3.setBounds(0, 0, 690, 265);
@@ -372,30 +382,85 @@ public class MianFrame extends JFrame {
                 textField3.setBounds(65, 275,60,25);
 
                 //---- button9 ----
-                button9.setText("\u67e5\u8be2");
+                button9.setText("查询");
                 panel3.add(button9);
                 button9.setBounds(new Rectangle(new Point(150, 275), button9.getPreferredSize()));
-
+                button9.addActionListener(
+                        e->{
+                            String temp = textField2.getText();
+                            ((DefaultTableModel)table3.getModel()).getDataVector().clear();//清空表格
+                            producttableModel = new DefaultTableModel(ProductTableModel.getDataFromDatabase(temp),head_product) {
+                                public boolean isCellEditable(int row, int column) {
+                                    return false;
+                                }
+                            };
+                            table2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                            table2.setModel(producttableModel);
+                        }
+                );
                 //---- button10 ----
-                button10.setText("\u65b0\u589e");
+                button10.setText("新增");
                 panel3.add(button10);
                 button10.setBounds(new Rectangle(new Point(245, 275), button10.getPreferredSize()));
-
+                button10.setText("新增");
+                panel3.add(button10);
+                button10.setBounds(new Rectangle(new Point(245, 275), button10.getPreferredSize()));
+                button10.addActionListener(
+                        (e)->{
+                            Product product=new Product();
+                            ProductInsert in=new ProductInsert(product);
+                            in.setVisible(true);
+                        }
+                );
                 //---- button11 ----
-                button11.setText("\u5220\u9664");
+                button11.setText("删除");
                 panel3.add(button11);
                 button11.setBounds(new Rectangle(new Point(340, 275), button11.getPreferredSize()));
-
+                button11.addActionListener(
+                        e->{
+                            ProductDao productDao=new ProductDaoImpl();
+                            int index1 = table2.getSelectedRow();//获取选中行
+                            int id =(int)table2.getValueAt(index1, 0);
+                            productDao.deletep(id);//删除选中行
+                        }
+                );
                 //---- button12 ----
-                button12.setText("\u4fee\u6539");
+                button12.setText("修改");
                 panel3.add(button12);
                 button12.setBounds(new Rectangle(new Point(435, 275), button12.getPreferredSize()));
+                button12.addActionListener(
+                        e->{
+                            try{
+                                int rowNo=table3.getSelectedRow();
+                                int id=(int)table3.getValueAt(rowNo, 0);
+                                String name=(String)table3.getValueAt(rowNo,1);
+                                float price=(float)table3.getValueAt(rowNo,2);
+                                String comment=(String)table3.getValueAt(rowNo,3);
 
+                                Product product=new Product(id,name,price,comment);
+
+                                ProductUpdate up=new ProductUpdate(product);
+                                up.setVisible(true);
+                            }
+                            catch(Exception E){
+                                E.printStackTrace();
+                            }
+                        }
+                );
                 //---- button15 ----
-                button15.setText("\u5237\u65b0");
+                button15.setText("刷新");
                 panel3.add(button15);
                 button15.setBounds(new Rectangle(new Point(530, 275), button15.getPreferredSize()));
-
+                button15.addActionListener(
+                        e->{
+                            String temp=null;
+                            producttableModel = new DefaultTableModel(ProductTableModel.getDataFromDatabase(temp),head_product){
+                                public boolean isCellEditable(int row, int column) {
+                                return false;
+                                }
+                            };
+                        }
+                );
             }
             tabbedPane4.addTab("商品管理", panel3);
 
@@ -501,8 +566,10 @@ public class MianFrame extends JFrame {
     private DefaultTableModel usertableModel;
     private String heademp[]={"ID","姓名","部门","职务","工资"};
     private DefaultTableModel employeesTableModel;
+    private String head_product[]={"ID","商品名","价格","商品描述"};
+    private DefaultTableModel producttableModel;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
     public static void main(String[] args) {
-        new MianFrame();
+        new MainFrame();
     }
 }
