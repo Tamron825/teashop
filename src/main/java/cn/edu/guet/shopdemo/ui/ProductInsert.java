@@ -3,7 +3,6 @@ package cn.edu.guet.shopdemo.ui;
 import cn.edu.guet.shopdemo.been.Product;
 import cn.edu.guet.shopdemo.dao.ProductDao;
 import cn.edu.guet.shopdemo.dao.impl.ProductDaoImpl;
-import cn.edu.guet.shopdemo.tablemodel.ProductTableModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,8 +27,6 @@ public class ProductInsert extends JFrame {
         textField3 = new JTextField();
         label4 = new JLabel();
         textField4 = new JTextField();
-        label5 = new JLabel();
-        textField5 = new JTextField();
         button1 = new JButton();
 
         //======== this ========
@@ -61,12 +58,12 @@ public class ProductInsert extends JFrame {
         textField3.setText("");
 
         //---- label5 ----
-        label5.setText("描述：");
-        contentPane.add(label5);
-        label5.setBounds(20, 140, 55, 20);
-        contentPane.add(textField5);
-        textField5.setBounds(70, 140, 130, 20);
-        textField5.setText("");
+        label4.setText("描述：");
+        contentPane.add(label4);
+        label4.setBounds(20, 140, 55, 20);
+        contentPane.add(textField4);
+        textField4.setBounds(70, 140, 130, 20);
+        textField4.setText("");
 
 
         //---- button1 ----
@@ -78,7 +75,7 @@ public class ProductInsert extends JFrame {
                     int id = Integer.valueOf(textField1.getText());
                     String name=textField2.getText();
                     float price=Float.valueOf(textField3.getText());
-                    String comment=textField4.getText();
+                    String comment= textField4.getText();
                     Product product = new Product(id,name,price,comment);
                     ProductDao productDao = new ProductDaoImpl();
                     productDao.insertp(product);
@@ -115,7 +112,5 @@ public class ProductInsert extends JFrame {
     private JTextField textField3;
     private JLabel label4;
     private JTextField textField4;
-    private JLabel label5;
-    private JTextField textField5;
     private JButton button1;
 }

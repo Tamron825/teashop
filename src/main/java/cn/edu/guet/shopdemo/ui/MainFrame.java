@@ -387,15 +387,15 @@ public class MainFrame extends JFrame {
                 button9.setBounds(new Rectangle(new Point(150, 275), button9.getPreferredSize()));
                 button9.addActionListener(
                         e->{
-                            String temp = textField2.getText();
+                            String temp = textField3.getText();
                             ((DefaultTableModel)table3.getModel()).getDataVector().clear();//清空表格
                             producttableModel = new DefaultTableModel(ProductTableModel.getDataFromDatabase(temp),head_product) {
                                 public boolean isCellEditable(int row, int column) {
                                     return false;
                                 }
                             };
-                            table2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                            table2.setModel(producttableModel);
+                            table3.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                            table3.setModel(producttableModel);
                         }
                 );
                 //---- button10 ----
@@ -418,10 +418,14 @@ public class MainFrame extends JFrame {
                 button11.setBounds(new Rectangle(new Point(340, 275), button11.getPreferredSize()));
                 button11.addActionListener(
                         e->{
-                            ProductDao productDao=new ProductDaoImpl();
-                            int index1 = table2.getSelectedRow();//获取选中行
-                            int id =(int)table2.getValueAt(index1, 0);
-                            productDao.deletep(id);//删除选中行
+                            try{
+                                ProductDao productDao=new ProductDaoImpl();
+                                int rowNo = table3.getSelectedRow();//获取选中行
+                                int id =(int)table3.getValueAt(rowNo, 0);
+                                productDao.deletep(id);//删除选中行
+                            }catch (Exception E){
+                                E.printStackTrace();
+                            }
                         }
                 );
                 //---- button12 ----
@@ -459,6 +463,8 @@ public class MainFrame extends JFrame {
                                 return false;
                                 }
                             };
+                            table3.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                            table3.setModel(producttableModel);
                         }
                 );
             }

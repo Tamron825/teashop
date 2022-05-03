@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class ProductDaoImpl implements ProductDao {
     public void deletep(int PID){
         Connection conn =null;
-        String sql="DELETE FROM product where product_id=?";
+        String sql="DELETE FROM Product where Product_id=?";
         try {
             conn= ConnectionHandler.getConnection();
             PreparedStatement pstmt =conn.prepareStatement(sql);
